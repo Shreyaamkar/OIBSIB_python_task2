@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>BMI Calculator</h2>
+
+    <input type="number" id="weight" placeholder="Weight (kg)">
+    <input type="number" id="height" placeholder="Height (meters)">
+    <button onclick="calculateBMI()">Calculate BMI</button>
+
+    <h3 id="result"></h3>
+</div>
+
+<script>
+function calculateBMI() {
+    const weight = document.getElementById("weight").value;
+    const height = document.getElementById("height").value;
+
+    fetch("/calculate", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            weight: weight,
+            height: height
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerText =
+            "BMI: " + data.bmi + " (" + data.category + ")";
+    });
+}
+</script>
+
+</body>
+</html>
